@@ -662,4 +662,139 @@
     {
       id: 2,
       name: "Wavy Hair Texture Cream",
-    
+      price: "₹249",
+      priceNum: 249,
+      category: "Grooming · Haircare",
+      tags: ["all", "grooming"],
+      badge: "new",
+      desc: "Perfect hold for naturally wavy or curly hair. Enhances texture without stiffness. Stay sharp all day.",
+      img: "YOUR_IMAGE_LINK_HERE", // PHOTO LINK DAAL BHAI
+      flipkartLink: "LINK_DAAL_BHAI",
+      meeshoLink: "LINK_DAAL_BHAI"
+    },
+    {
+      id: 3,
+      name: "Aggressive Fit Cargo Jogger",
+      price: "₹699",
+      priceNum: 699,
+      category: "Streetwear · Bottoms",
+      tags: ["all", "streetwear"],
+      badge: null,
+      desc: "Tactical 6-pocket cargo joggers. Edgy, relaxed, and perfect to pair with your chunky sneakers.",
+      img: "YOUR_IMAGE_LINK_HERE", // PHOTO LINK DAAL BHAI
+      flipkartLink: "LINK_DAAL_BHAI",
+      meeshoLink: "LINK_DAAL_BHAI"
+    },
+    {
+      id: 4,
+      name: "Cricket Practice Tracksuit",
+      price: "₹899",
+      priceNum: 899,
+      category: "Sports · Activewear",
+      tags: ["all", "sports"],
+      badge: "hot",
+      desc: "Lightweight, breathable, and built for action. Whether you're in the nets or chilling on the streets.",
+      img: "YOUR_IMAGE_LINK_HERE", // PHOTO LINK DAAL BHAI
+      flipkartLink: "LINK_DAAL_BHAI",
+      meeshoLink: "LINK_DAAL_BHAI"
+    }
+  ];
+
+  let activeFilter  = "all";
+  let searchQuery   = "";
+  let currentOutfit = null;
+
+  function renderGrid() {
+    const grid = document.getElementById("outfit-grid");
+    const noResults = document.getElementById("no-results");
+    const countEl = document.getElementById("result-count");
+
+    let filtered = outfits.filter(o => o.tags.includes(activeFilter));
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      filtered = filtered.filter(o => o.name.toLowerCase().includes(q) || o.category.toLowerCase().includes(q) || o.desc.toLowerCase().includes(q));
+    }
+
+    grid.querySelectorAll(".outfit-card").forEach(c => c.remove());
+    countEl.textContent = filtered.length > 0 ? `${filtered.length} items` : "";
+
+    if (filtered.length === 0) { noResults.style.display = "block"; return; }
+    noResults.style.display = "none";
+
+    filtered.forEach((outfit, idx) => {
+      const card = document.createElement("div");
+      card.className = "outfit-card";
+      card.style.animationDelay = `${idx * 0.04}s`;
+      card.innerHTML = `
+        ${outfit.badge === "new" ? `<div class="badge-new">New</div>` : ""}
+        ${outfit.badge === "hot" ? `<div class="badge-hot">🔥 Hot</div>` : ""}
+        <div class="card-img-wrap"><img src="${outfit.img}" alt="${outfit.name}" loading="lazy" /></div>
+        <div class="card-overlay">
+          <div class="card-name">${outfit.name}</div>
+          <div class="card-price">${outfit.price}</div>
+        </div>
+      `;
+      card.addEventListener("click", () => openModal(outfit));
+      grid.insertBefore(card, noResults);
+    });
+  }
+
+  function openModal(outfit) {
+    currentOutfit = outfit;
+    document.getElementById("modal-img").src = outfit.img;
+    document.getElementById("modal-name").textContent = outfit.name;
+    document.getElementById("modal-price").textContent = outfit.price;
+    document.getElementById("modal-category").textContent = outfit.category;
+    document.getElementById("modal-desc").textContent = outfit.desc;
+    document.getElementById("btn-flipkart").href = outfit.flipkartLink;
+    document.getElementById("btn-meesho").href = outfit.meeshoLink;
+    document.getElementById("modal-backdrop").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    document.getElementById("modal-backdrop").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  document.getElementById("modal-backdrop").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
+
+  document.getElementById("filter-chips").addEventListener("click", function(e) {
+    const chip = e.target.closest(".chip");
+    if (!chip) return;
+    this.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    activeFilter = chip.dataset.filter;
+    renderGrid();
+  });
+
+  const searchInput = document.getElementById("search-input");
+  const clearBtn = document.getElementById("clear-btn");
+  searchInput.addEventListener("input", function() {
+    searchQuery = this.value;
+    clearBtn.style.display = searchQuery ? "block" : "none";
+    renderGrid();
+  });
+  function clearSearch() {
+    searchInput.value = ""; searchQuery = ""; clearBtn.style.display = "none"; renderGrid();
+  }
+
+  function shareItem() {
+    if (!currentOutfit) return;
+    const text = `Check out this fit: ${currentOutfit.name} — ${currentOutfit.price} 🔥`;
+    if (navigator.share) navigator.share({ title: currentOutfit.name, text, url: window.location.href }).catch(()=>{});
+    else copyToClipboard(text);
+  }
+  function copyLink() { copyToClipboard(window.location.href); }
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => showToast("✅ Copied!")).catch(() => showToast("📋 Copy manually"));
+  }
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg; toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2800);
+  }
+
+  renderGrid();
+</script>
+</body>
+</html>
