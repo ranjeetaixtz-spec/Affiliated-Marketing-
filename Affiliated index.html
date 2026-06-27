@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@YourStyleGottaEdge — Curated Fits | Tap to Cop</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Google Fonts: Inter for body, Bebas Neue for headings -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* BASE & RESET */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #121212;
+      --surface:    #1a1a1a;
+      --surface2:   #222222;
+      --accent:     #00f0ff;   /* electric blue */
+      --accent2:    #c8ff00;   /* neon green */
+      --silver:     #b8c0cc;
+      --text:       #f0f0f0;
+      --muted:      #888;
+      --flipkart:   #F7D117;
+      --meesho:     #F43397;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* PHONE WRAPPER */
+    #app {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      background: var(--bg);
+      min-height: 100dvh;
+    }
+
+    /* TYPOGRAPHY */
+    .font-display { font-family: 'Bebas Neue', sans-serif; }
+
+    /* STICKY HEADER */
+    #header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(18,18,18,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0,240,255,0.10);
+      padding: 14px 16px 10px;
+    }
+
+    .avatar-ring {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      padding: 2px;
+      background: conic-gradient(var(--accent), var(--accent2), var(--accent));
+      box-shadow: 0 0 14px rgba(0,240,255,0.55), 0 0 28px rgba(200,255,0,0.20);
+      flex-shrink: 0;
+    }
+    .avatar-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 2px solid var(--bg);
+    }
+
+    /* STATS BAR */
+    .stat-pill {
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--silver);
+    }
+    .stat-pill span { color: var(--accent); font-size: 13px; }
+
+    /* STICKY SEARCH + FILTERS */
+    #search-bar {
+      position: sticky;
+      top: 102px;
+      z-index: 90;
+      background: rgba(18,18,18,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 10px 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .search-input-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid rgba(0,240,255,0.18);
+      border-radius: 12px;
+      padding: 0 12px;
+      gap: 8px;
+      transition: border-color .25s;
+    }
+    .search-input-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0,240,255,0.12);
+    }
+    .search-input-wrap svg { flex-shrink: 0; }
+    .search-input-wrap input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      padding: 10px 0;
+      width: 100%;
+      caret-color: var(--accent);
+    }
+    .search-input-wrap input::placeholder { color: var(--muted); }
+
+    .filters-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 10px;
+      scrollbar-width: none;
+    }
+    .filters-scroll::-webkit-scrollbar { display: none; }
+
+    .chip {
+      white-space: nowrap;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: var(--surface2);
+      color: var(--silver);
+      cursor: pointer;
+      transition: all .2s;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .chip.active, .chip:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(0,240,255,0.35);
+    }
+
+    /* SECTION HEADING */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 16px 0;
+    }
+    .section-heading h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: var(--text);
+    }
+    .heading-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0,240,255,0.4), transparent);
+    }
+    .dot-accent {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    /* OUTFIT GRID */
+    #outfit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px 16px 100px;
+    }
+
+    /* CARD */
+    .outfit-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s;
+      will-change: transform;
+    }
+    .outfit-card:hover, .outfit-card:active {
+      transform: scale(1.025) translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.55), 0 0 0 1.5px rgba(0,240,255,0.25);
+      z-index: 2;
+    }
+
+    .card-img-wrap {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform .4s cubic-bezier(.22,1,.36,1);
+      display: block;
+    }
+    .outfit-card:hover .card-img-wrap img {
+      transform: scale(1.07);
+    }
+
+    .card-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent 0%, rgba(0,0,0,0.65) 40%, rgba(0,0,0,0.92) 100%);
+      padding: 28px 10px 10px;
+    }
+
+    .card-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: 0.3px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      letter-spacing: 1px;
+      color: var(--accent2);
+      margin-top: 2px;
+    }
+
+    .badge-new {
+      position: absolute;
+      top: 9px; left: 9px;
+      background: var(--accent);
+      color: #000;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-hot {
+      position: absolute;
+      top: 9px; left: 9px;
+      background: #ff3d5a;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .card-platforms {
+      display: flex;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .platform-dot {
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    #no-results {
+      display: none;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    #no-results .emoji { font-size: 36px; margin-bottom: 8px; }
+
+    /* BOTTOM MODAL / SHEET */
+    #modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    #modal-backdrop.open {
+      display: flex;
+      animation: backdropIn .25s ease;
+    }
+    @keyframes backdropIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    #modal-sheet {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid rgba(0,240,255,0.18);
+      padding: 0 0 env(safe-area-inset-bottom, 16px);
+      animation: sheetUp .3s cubic-bezier(.22,1,.36,1);
+      max-height: 92dvh;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    #modal-sheet::-webkit-scrollbar { display: none; }
+
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    .sheet-handle {
+      width: 38px; height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    .modal-img-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+    .modal-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .modal-body { padding: 16px 18px 20px; }
+
+    .modal-category {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    #modal-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 1.5px;
+      color: #fff;
+      line-height: 1.15;
+    }
+
+    #modal-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: var(--accent2);
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    #modal-desc {
+      font-size: 13px;
+      color: var(--silver);
+      line-height: 1.6;
+      margin-top: 10px;
+      border-left: 2px solid rgba(0,240,255,0.25);
+      padding-left: 10px;
+    }
+
+    .modal-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 14px 0;
+    }
+
+    /* CTA BUTTONS */
+    .cta-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform .18s, box-shadow .18s, filter .18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.08);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .cta-btn:hover::after, .cta-btn:active::after { opacity: 1; }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-btn:active { transform: scale(0.98); }
+
+    .btn-flipkart {
+      background: linear-gradient(135deg, #f7d117 0%, #f0b800 100%);
+      color: #1a1a1a;
+      box-shadow: 0 4px 20px rgba(247,209,23,0.35);
+    }
+    .btn-flipkart:hover { box-shadow: 0 6px 28px rgba(247,209,23,0.5); }
+
+    .btn-meesho {
+      background: linear-gradient(135deg, #f43397 0%, #d4006c 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(244,51,151,0.35);
+    }
+    .btn-meesho:hover { box-shadow: 0 6px 28px rgba(244,51,151,0.5); }
+
+    .btn-icon {
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .share-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .share-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--silver);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .share-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* FOOTER */
+    #footer {
+      text-align: center;
+      padding: 20px 16px 30px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    #footer a { color: var(--accent); text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.2); border-radius: 2px; }
+
+    /* TOAST NOTIFICATION */
+    #toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(0,240,255,0.12);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      z-index: 999;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header id="header">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="avatar-ring">
+        <img src="YOUR_PROFILE_PIC_LINK_HERE" alt="Profile Picture" loading="lazy" />
+      </div>
+      <div style="flex:1; min-width:0;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span style="font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1px; color:#fff;">@TUMHARA_USERNAME</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="#00f0ff"/>
+            <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p style="font-size:11.5px; color:#888; margin-top:1px; font-weight:500; letter-spacing:0.5px;">
+          Curated Fits&nbsp; <span style="color:#c8ff00;">|</span> &nbsp;Tap to Cop 🔥
+        </p>
+      </div>
+      <a href="YOUR_INSTAGRAM_LINK_HERE" target="_blank" rel="noopener"
+         style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7); flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- SEARCH & FILTERS -->
+  <div id="search-bar">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"/>
+        <path d="M16.5 16.5l4 4" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input id="search-input" type="text" placeholder='Search fits…' autocomplete="off" spellcheck="false" />
+      <button id="clear-btn" onclick="clearSearch()" style="display:none; background:none; border:none; cursor:pointer; color:#888; font-size:16px; padding:0 4px; line-height:1;">✕</button>
+    </div>
+
+    <!-- UPDATE FILTERS FOR YOUR VIBE -->
+    <div class="filters-scroll" id="filter-chips">
+      <div class="chip active" data-filter="all">⚡ All Fits</div>
+      <div class="chip" data-filter="accessories">🕶️ Accessories</div>
+      <div class="chip" data-filter="grooming">💈 Grooming</div>
+      <div class="chip" data-filter="streetwear">🛹 Streetwear</div>
+      <div class="chip" data-filter="sports">🏏 Sports/Active</div>
+    </div>
+  </div>
+
+  <div class="section-heading">
+    <div class="dot-accent"></div>
+    <h2 id="section-title">DROP ZONE</h2>
+    <div class="heading-line"></div>
+    <span style="font-size:11px; color:var(--muted); font-weight:600;" id="result-count"></span>
+  </div>
+
+  <!-- OUTFIT GRID -->
+  <div id="outfit-grid">
+    <div id="no-results">
+      <div class="emoji">🔍</div>
+      <p style="font-weight:700; color:#ccc;">No fits found</p>
+      <p style="font-size:12px; margin-top:4px;">Try a different search term</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <p>Made with 🖤 by <a href="#">@TUMHARA_USERNAME</a></p>
+    <p style="margin-top:4px;">Affiliate links — prices may vary on platform.</p>
+  </footer>
+
+</div>
+
+<!-- BOTTOM SHEET MODAL -->
+<div id="modal-backdrop" role="dialog" aria-modal="true">
+  <div id="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="modal-img-wrap"><img id="modal-img" src="" alt="" loading="lazy" /></div>
+    <div class="modal-body">
+      <div class="modal-category" id="modal-category"></div>
+      <div id="modal-name"></div>
+      <div id="modal-price"></div>
+      <p id="modal-desc"></p>
+      <div class="modal-divider"></div>
+      <p class="cta-label">🛒 Grab It On —</p>
+      <a id="btn-flipkart" class="cta-btn btn-flipkart" href="#" target="_blank" rel="noopener noreferrer">
+        <div class="btn-icon" style="background:rgba(0,0,0,0.15);"><span style="font-family:'Bebas Neue',sans-serif; font-size:15px;">F</span></div>
+        <span>Buy on Flipkart 💛</span>
+      </a>
+      <a id="btn-meesho" class="cta-btn btn-meesho" href="#" target="_blank" rel="noopener noreferrer" style="margin-top:10px;">
+        <div class="btn-icon" style="background:rgba(255,255,255,0.2);"><span style="font-family:'Bebas Neue',sans-serif; font-size:15px;">M</span></div>
+        <span>Buy on Meesho 💖</span>
+      </a>
+      <div class="share-row">
+        <button class="share-btn" onclick="shareItem()">Share</button>
+        <button class="share-btn" onclick="copyLink()">Copy Link</button>
+        <button class="share-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- JAVASCRIPT & DATA -->
+<script>
+  /* 
+     TUMHARA PERSONALIZED OUTFIT DATA 
+     Yahan Maine Tumhari Vibe Ke Hisaab Se Items Daal Diye Hain!
+  */
+  const outfits = [
+    {
+      id: 1,
+      name: "Sporty Rectangular Frames",
+      price: "₹399",
+      priceNum: 399,
+      category: "Accessories · Eyewear",
+      tags: ["all", "accessories"],
+      badge: "hot",
+      desc: "Aggressive automotive-inspired rectangular sunglasses. Sharp edges for a structured jawline. Built for speed and style.",
+      img: "YOUR_IMAGE_LINK_HERE", // PHOTO LINK DAAL BHAI
+      flipkartLink: "LINK_DAAL_BHAI",
+      meeshoLink: "LINK_DAAL_BHAI"
+    },
+    {
+      id: 2,
+      name: "Wavy Hair Texture Cream",
+    
